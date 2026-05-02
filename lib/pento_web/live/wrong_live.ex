@@ -1,7 +1,8 @@
 defmodule PentoWeb.WrongLive do
   use PentoWeb, :live_view
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, score: 0, message: "Make a guess", number: Enum.random(1..10), time: time() |> to_string,  won: false)}
+  alias Pento.Accounts
+  def mount(_params, session, socket) do
+    {:ok, assign(socket, score: 0, message: "Make a guess",session_id: session["live_socket_id"], number: Enum.random(1..10), time: time() |> to_string,  won: false)}
   end
   def render (assigns) do
     ~H"""
@@ -23,6 +24,9 @@ defmodule PentoWeb.WrongLive do
       <% end %>
     </h2>
     <br />
+    <pre>
+      {@session_id}
+    </pre>
     <h2>
     <%= if @won do %>
       <.link

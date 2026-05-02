@@ -9,7 +9,7 @@ defmodule Pento.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Pento", "contact@example.com"})
+      |> from({"Do Not Reply", "DoNotReply@velasber.com"})
       |> subject(subject)
       |> text_body(body)
 

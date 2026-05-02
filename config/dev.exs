@@ -91,3 +91,15 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :pento, Pento.Mailer,
+  adapter: Swoosh.Adapters.SMTP,
+  #relay: "smtp-relay.gmail.com",
+  relay: "smtp.protonmail.ch",
+  port: 587,
+  username: System.get_env("PROTON_USERNAME"),
+  password: System.get_env("PROTON_PASSWORD"),
+  ssl: false,
+  tls: :always,
+  tls_options: [verify: :verify_none],
+  auth: :always
