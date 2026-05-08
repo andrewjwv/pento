@@ -13,12 +13,24 @@ defmodule Pento.Catalog.Product do
   end
 
   @doc false
-  def changeset(product, attrs) do
+  def changeset(product, attrs, user_scope) do
     product
     |> cast(attrs, [:name, :description, :unit_price, :sku])
     |> validate_required([:name, :description, :unit_price, :sku])
     |> unique_constraint(:sku)
     |> validate_number(:unit_price, greater_than: 0.0)
-    #|> put_change(:user_id, user_scope.user.id)
+    |> put_change(:user_id, user_scope.user.id)
+  end
+
+    def changeset(product, attrs) do
+    product
+    |> cast(attrs, [:name, :description, :unit_price, :sku])
+    |> validate_required([:name, :description, :unit_price, :sku])
+    |> unique_constraint(:sku)
+    |> validate_number(:unit_price, greater_than: 0.0)
+  end
+
+  def change_product(%__MODULE__{} = product, user_scope, attrs \\ %{}) do
+    changeset(product, attrs, user_scope)
   end
 end

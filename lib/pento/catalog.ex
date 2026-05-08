@@ -30,6 +30,10 @@ defmodule Pento.Catalog do
 
     Phoenix.PubSub.broadcast(Pento.PubSub, "user:#{key}:products", message)
   end
+  defp broadcast_product(message) do
+
+    Phoenix.PubSub.broadcast(Pento.PubSub, "products", message)
+  end
 
   @doc """
   Returns the list of products.
@@ -80,6 +84,16 @@ defmodule Pento.Catalog do
            |> Product.changeset(attrs, scope)
            |> Repo.insert() do
       broadcast_product(scope, {:created, product})
+      {:ok, product}
+    end
+  end
+
+  def create_product(attrs) do
+    with {:ok, product = %Product{}} <-
+           %Product{}
+           |> Product.changeset(attrs)
+           |> Repo.insert() do
+      broadcast_product({:created, product})
       {:ok, product}
     end
   end
