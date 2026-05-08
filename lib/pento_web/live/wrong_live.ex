@@ -26,6 +26,7 @@ defmodule PentoWeb.WrongLive do
     <br />
     <pre>
       {@session_id}
+      {@current_scope.user.username}
     </pre>
     <h2>
     <%= if @won do %>
