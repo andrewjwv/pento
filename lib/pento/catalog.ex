@@ -65,6 +65,9 @@ defmodule Pento.Catalog do
   def get_product!(%Scope{} = scope, id) do
     Repo.get_by!(Product, id: id, user_id: scope.user.id)
   end
+  def get_product!( id) do
+    Repo.get_by!(Product, id: id)
+  end
 
   @doc """
   Creates a product.
@@ -122,6 +125,16 @@ defmodule Pento.Catalog do
     end
   end
 
+  def update_product( %Product{} = product, attrs) do
+    with {:ok, product = %Product{}} <-
+           product
+           |> Product.changeset(attrs)
+           |> Repo.update() do
+      broadcast_product( {:updated, product})
+      {:ok, product}
+    end
+  end
+
   @doc """
   Deletes a product.
 
@@ -157,5 +170,9 @@ defmodule Pento.Catalog do
     true = product.user_id == scope.user.id
 
     Product.changeset(product, attrs, scope)
+  end
+
+  def markdown_product(%Product{} = product, attrs \\ %{}) do
+    Product.discount(product.id, attrs)
   end
 end
